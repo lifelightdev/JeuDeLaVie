@@ -1,4 +1,5 @@
 package life.light.dev;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -7,12 +8,8 @@ public class Panneau extends JPanel {
 
     private  Boolean[][] grille;
     public void paintComponent(Graphics g){
-        //if (fondcouleur) {
-            //On choisit une couleur de fond pour le rectangle
-            g.setColor(Color.white);
-            //On le dessine de sorte qu'il occupe toute la surface
-            g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        //}
+        g.setColor(Color.white);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.black);
 
         for (int i = 0; i < grille.length; i++) {
