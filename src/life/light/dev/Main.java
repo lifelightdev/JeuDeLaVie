@@ -1,17 +1,17 @@
 package life.light.dev;
-
 import javax.swing.*;
 import java.util.Random;
 
 public class Main {
 
-    public static Boolean[][] grille;
     public static int taille;
 
     public static void main(String[] args) {
+
+
         taille = 90;
         int nombreVivant = taille*10;
-        grille = genererGrille(taille, nombreVivant);
+        Boolean[][] grille = genererGrille(taille, nombreVivant);
 
         JFrame fenetre = new JFrame();
 
@@ -33,21 +33,20 @@ public class Main {
         fenetre.setContentPane(pan);
 
         for (int i =0; i<1000;i++) {
-
             pan.setGrille(grille);
             pan.revalidate();
             pan.repaint();
+            grille = generation(grille);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            generation();
         }
-
     }
 
     public static Boolean[][] genererGrille (int taille, int nombreVivant){
+
         Boolean[][] grille = new Boolean[taille][taille];
         grille = initMort(grille);
         grille = initVivant(nombreVivant, grille);
@@ -74,97 +73,77 @@ public class Main {
             colonne = rand.nextInt(taille);
             if (!celulleEstVivante(ligne, colonne, grille)) {
                 grille[ligne][colonne] = true;
-                nbCelluleVivante = nbCelluleVivante + 2;
+                nbCelluleVivante = nbCelluleVivante + 1;
             }
         }
         return grille;
     }
 
     private static boolean celulleEstVivante(int ligne, int colonne, Boolean[][] grille) {
-        return grille[ligne][colonne];
+        if (ligne>=0 && ligne < taille && colonne >=0 && colonne < taille ) {
+            return grille[ligne][colonne];
+        } else {
+            return false;
+        }
     }
 
     private static int calculNombreVivantAutour(int ligne, int colonne, Boolean[][] grille) {
         int nbVivant = 0;
-        boolean hautGauche = false;
-        if (ligne > 0 && colonne > 0) {
-            hautGauche = grille[ligne - 1][colonne - 1];
-        }
-        boolean haut = false;
-        if (ligne > 0) {
-            haut = grille[ligne - 1][colonne];
-        }
-        boolean hautDroit = false;
-        if (ligne > 0 && colonne < taille - 1) {
-            hautDroit = grille[ligne - 1][colonne + 1];
-        }
-        boolean gauche = false;
-        if (colonne > 0) {
-            gauche = grille[ligne][colonne - 1];
-        }
-        boolean droit = false;
-        if (colonne < taille - 1) {
-            droit = grille[ligne][colonne + 1];
-        }
-        boolean basGauche = false;
-        if (ligne < taille - 1 && colonne > 0) {
-            basGauche = grille[ligne + 1][colonne - 1];
-        }
-        boolean bas = false;
-        if (ligne < taille - 1) {
-            bas = grille[ligne + 1][colonne];
-        }
-        boolean basDroit = false;
-        if (ligne < taille - 1 && colonne < taille - 1) {
-            basDroit = grille[ligne + 1][colonne + 1];
-        }
-        if (hautGauche) {
+        // haut Gauche
+        if (celulleEstVivante(ligne - 1,colonne - 1, grille)){
             nbVivant++;
         }
-        if (haut) {
+        // haut
+        if (celulleEstVivante(ligne - 1,colonne , grille)){
             nbVivant++;
         }
-        if (hautDroit) {
+        // haut droit
+        if (celulleEstVivante(ligne - 1,colonne + 1 , grille)){
             nbVivant++;
         }
-        if (gauche) {
+        //gauche
+        if (celulleEstVivante(ligne,colonne - 1 , grille)){
             nbVivant++;
         }
-        if (droit) {
+        // droit
+        if (celulleEstVivante(ligne,colonne + 1 , grille)){
             nbVivant++;
         }
-        if (basGauche) {
+        //bas Gauche
+        if (celulleEstVivante(ligne + 1,colonne - 1 , grille)){
             nbVivant++;
         }
-        if (bas) {
+        //bas
+        if (celulleEstVivante(ligne + 1,colonne , grille)){
             nbVivant++;
         }
-        if (basDroit) {
+        //bas droit
+        if (celulleEstVivante(ligne + 1,colonne + 1 , grille)){
             nbVivant++;
         }
+
         return nbVivant;
     }
 
-    private static void generation() {
+    private static Boolean[][] generation(Boolean[][] grilleEnCours) {
+        Boolean[][] grilleNouvelleGeneration = genererGrille(taille, 0);
         // vivant
         for (int ligne = 0; ligne < taille; ligne++) {
             for (int colonne = 0; colonne < taille; colonne++) {
-                int nbVivant = calculNombreVivantAutour(ligne, colonne, grille);
-                if (celulleEstVivante(ligne, colonne,grille)) {
-                    if (nbVivant == 2 || nbVivant == 3) {
-                        grille[ligne][colonne] = true;
-                    } else {
-                        grille[ligne][colonne] = false;
+                int nbVivant = calculNombreVivantAutour(ligne, colonne, grilleEnCours);
+                if (celulleEstVivante(ligne, colonne,grilleEnCours)) {
+                    grilleNouvelleGeneration[ligne][colonne] = false;
+                    if (nbVivant == 2 || nbVivant == 3 ) {
+                        grilleNouvelleGeneration[ligne][colonne] = true;
                     }
                 } else {
+                    grilleNouvelleGeneration[ligne][colonne] = false;
                     if (nbVivant == 3) {
-                        grille[ligne][colonne] = true;
-                    } else {
-                        grille[ligne][colonne] = false;
+                        grilleNouvelleGeneration[ligne][colonne] = true;
                     }
                 }
             }
         }
-        grille = grille;
+        return grilleNouvelleGeneration;
     }
 }
