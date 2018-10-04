@@ -10,7 +10,7 @@ public class Main {
 
 
         taille = 90;
-        int nombreVivant = taille*10;
+        int nombreVivant = 3000;
         Boolean[][] grille = genererGrille(taille, nombreVivant);
 
         JFrame fenetre = new JFrame();
@@ -32,7 +32,7 @@ public class Main {
         Panneau pan = new Panneau();
         fenetre.setContentPane(pan);
 
-        for (int i =0; i<1000;i++) {
+        for (int i =0; i<10000;i++) {
             pan.setGrille(grille);
             pan.revalidate();
             pan.repaint();
