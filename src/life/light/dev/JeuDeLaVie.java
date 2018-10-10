@@ -7,17 +7,16 @@ public class JeuDeLaVie {
 
     public static void main (String arg[]){
         int taille = 90;
-        int nbVivantACreer = 3000;
+        int nbVivantACreer = taille*(100/3);
         Grille grille = new Grille(taille);
-        init_mort(grille);
-        init_vivant(grille, nbVivantACreer);
+        grille.init_vivant(nbVivantACreer);
 
         //Affichage
         JFrame fenetre = new JFrame();
         fenetre.setContentPane(new Panneau());
 
         //Définit un titre de la fenêtre
-        fenetre.setTitle("Le jeux de la vie");
+        fenetre.setTitle("Le jeu de la vie");
         //Définit sa taille
         fenetre.setSize(taille*10+20, taille*10+40);
         //Positionne la fenêtre au centre
@@ -42,19 +41,8 @@ public class JeuDeLaVie {
         }
     }
 
-    public static void init_mort(Grille grille) {
-        int taille = grille.getTaille();
-        for ( int colonne = 0 ; colonne < taille; colonne++){
-            for ( int ligne = 0 ; ligne < taille; ligne++){
-                Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-                grille.setCellule(coordonnees,false);
-            }
-        }
-    }
-
     public static Grille generation(Grille grille){
         Grille grilleNewGeneration = new Grille(grille.getTaille());
-        init_mort(grilleNewGeneration);
         for ( int colonne = 0 ; colonne < grille.getTaille(); colonne++){
             for ( int ligne = 0 ; ligne < grille.getTaille(); ligne++){
                 Coordonnees coordonnees = new Coordonnees(colonne, ligne);
@@ -67,20 +55,6 @@ public class JeuDeLaVie {
             }
         }
         return grilleNewGeneration;
-    }
-
-    public static void init_vivant(Grille grille, int nombreDeVivantACreer) {
-        Random rand = new Random();
-        int nbVivantEnCreation = 0;
-        while (nbVivantEnCreation < nombreDeVivantACreer){
-            int colonne = rand.nextInt(grille.getTaille());
-            int ligne = rand.nextInt(grille.getTaille());
-            Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-            if (!grille.getCellule(coordonnees)){
-                grille.setCellule(coordonnees, true);
-                nbVivantEnCreation++;
-            }
-        }
     }
 
 }

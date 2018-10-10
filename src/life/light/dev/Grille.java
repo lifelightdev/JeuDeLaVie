@@ -1,40 +1,62 @@
 package life.light.dev;
 
+import java.util.Random;
+
 public class Grille {
 
     public static final int NAISSANCE = 3;
     public static final int SURVIE2VIVANTS = 2;
     public static final int SURVIE3VIVANTS = 3;
 
-    private Boolean[][] grille = new Boolean[0][0];
+    private Cellule[][] grille;
     private Coordonnees coordonnees;
     private int taille;
 
-    Grille(){
-        grille = new Boolean[0][0];
-        taille = 0;
+    Grille(int taille){
+        init_mort(taille);
+        this.taille = taille;
     }
 
-    Grille(int taille){
-        grille = new Boolean[taille][taille];
-        this.taille = taille;
+    private void init_mort(int taille) {
+        grille = new Cellule[taille][taille];
+        for ( int colonne = 0 ; colonne < taille; colonne++){
+            Cellule[] uneLigne = new Cellule[taille];
+            for ( int ligne = 0 ; ligne < taille; ligne++){
+                uneLigne[ligne] = new Cellule();
+            }
+            grille[colonne] = uneLigne;
+        }
+    }
+
+    public void init_vivant(int nombreDeVivantACreer) {
+        Random rand = new Random();
+        int nbVivantEnCreation = 0;
+        while (nbVivantEnCreation < nombreDeVivantACreer){
+            int colonne = rand.nextInt(taille);
+            int ligne = rand.nextInt(taille);
+            Coordonnees coordonnees = new Coordonnees(colonne, ligne);
+            if (getCellule(coordonnees).isMort()){
+                setCellule(coordonnees, true);
+                nbVivantEnCreation++;
+            }
+        }
     }
 
     public int getTaille() {
         return taille;
     }
 
-    public Boolean getCellule(Coordonnees coordonnees){
+    public Cellule getCellule(Coordonnees coordonnees){
         return grille[coordonnees.getColonne()][coordonnees.getLigne()];
     }
 
     public void setCellule(Coordonnees coordonnees, Boolean value){
-        grille[coordonnees.getColonne()][coordonnees.getLigne()] = value;
+        grille[coordonnees.getColonne()][coordonnees.getLigne()].setValeur(value);
     }
 
     public void setCellule(int colonne, int ligne, Boolean value){
         Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-        grille[coordonnees.getColonne()][coordonnees.getLigne()] = value;
+        grille[coordonnees.getColonne()][coordonnees.getLigne()].setValeur(value);
     }
 
     public boolean isDansGrille(Coordonnees coordonnees) {
@@ -116,7 +138,7 @@ public class Grille {
     }
 
     public Boolean isNaissance (Coordonnees coordonnees){
-        if (!getCellule(coordonnees)) {
+        if (!getCellule(coordonnees).getValeur()) {
             if (nbVivantAlentour(coordonnees) == NAISSANCE) {
                 return true;
             }
@@ -125,7 +147,7 @@ public class Grille {
     }
 
     public Boolean isSurvie (Coordonnees coordonnees){
-        if(getCellule(coordonnees)){
+        if(getCellule(coordonnees).isVivant()){
             int nbVivantAlentour = nbVivantAlentour(coordonnees);
             if ((nbVivantAlentour != SURVIE2VIVANTS) && (nbVivantAlentour != SURVIE3VIVANTS)) {
                 return false;

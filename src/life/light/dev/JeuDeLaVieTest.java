@@ -23,20 +23,18 @@ public class JeuDeLaVieTest {
         grilleResultat.setCellule(0,1, false);
         grilleResultat.setCellule(1,0, false);
         grilleResultat.setCellule(1,1, false);
-        JeuDeLaVie.init_mort(grille);
         assertTrue("La grille n'est pas égale au résultat attendu.",grilleResultat.equals(grille));
     }
 
     @Test
     public void doit_ajouter_3_vivant_dans_grille_de_2_par_2() {
         Grille grille = new Grille(2);
-        JeuDeLaVie.init_mort(grille);
-        JeuDeLaVie.init_vivant(grille, 3);
+        grille.init_vivant( 3);
         int nbVivantCreer = 0;
         for (int colonne = 0; colonne < 2; colonne++) {
             for (int ligne = 0; ligne < 2; ligne++) {
                 Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-                if (grille.getCellule(coordonnees)) {
+                if (grille.getCellule(coordonnees).isVivant()) {
                     nbVivantCreer++;
                 }
             }
