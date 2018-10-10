@@ -17,7 +17,7 @@ public class Panneau extends JPanel {
         for (int colonne = 0; colonne < grille.getTaille(); colonne++) {
             for (int ligne = 0; ligne < grille.getTaille(); ligne++) {
                 Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-                if (grille.getCellule(coordonnees)){
+                if (grille.getCellule(coordonnees).getValeur()){
                     g.fillRect(colonne*10, ligne*10, 10, 10);
                 }
             }
