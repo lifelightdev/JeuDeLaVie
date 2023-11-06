@@ -6,9 +6,8 @@ public class JeuDeLaVie {
 
     public static void main (String arg[]){
         int taille = 90;
-        int nbVivantACreer = taille*(100/3);
-        Grille grille = new Grille(taille);
-        grille.init_vivant(nbVivantACreer);
+        World world = new World();
+        world.initWorld(taille*8, taille);
 
         //Affichage
         JFrame fenetre = new JFrame();
@@ -28,7 +27,7 @@ public class JeuDeLaVie {
         fenetre.setContentPane(pan);
 
         for( int nbGeneration = 0; nbGeneration < 10000; nbGeneration ++){
-            pan.setGrille(grille);
+            pan.setWorld(world);
             pan.revalidate();
             pan.repaint();
             try {
@@ -36,24 +35,8 @@ public class JeuDeLaVie {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            grille = generation(grille);
+            world = world.newGeneration(taille);
         }
-    }
-
-    public static Grille generation(Grille grille){
-        Grille grilleNewGeneration = new Grille(grille.getTaille());
-        for ( int colonne = 0 ; colonne < grille.getTaille(); colonne++){
-            for ( int ligne = 0 ; ligne < grille.getTaille(); ligne++){
-                Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-               if(grille.isNaissance(coordonnees)){
-                   grilleNewGeneration.setCellule(coordonnees, true);
-               }
-               if(grille.isSurvie(coordonnees)){
-                   grilleNewGeneration.setCellule(coordonnees, true);
-               }
-            }
-        }
-        return grilleNewGeneration;
     }
 
 }
