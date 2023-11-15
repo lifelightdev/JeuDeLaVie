@@ -6,8 +6,7 @@ public class JeuDeLaVie {
 
     public static void main (String arg[]){
         int taille = 90;
-        World world = new World();
-        world.initWorld(taille*8, taille);
+        World world = new World(Tools.initWorld(taille*8, taille));
 
         //Affichage
         JFrame fenetre = new JFrame();

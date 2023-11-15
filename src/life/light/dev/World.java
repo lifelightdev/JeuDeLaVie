@@ -1,30 +1,49 @@
 package life.light.dev;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class World {
 
-    Set<Cell> cellsAlive = new HashSet<>();
+    Set<Cell> cellsAlive;
+    Map<Integer, Function<Cell, Boolean>> cellState = new HashMap<>();
 
     public World(Set<Cell> cellsAlive) {
         this.cellsAlive = cellsAlive;
+        state();
     }
 
-    public World() {
-    }
 
-    // zero ou un voisin vivant => mort par solitude
-    // deux voisin vivant => ne change pas d'état
-    // trois voisin vivant => naissance
-    // quatre et plus de voisin vivant => mort par sur population
+    // zero ou un voisin vivant → mort par solitude
+    // deux voisins vivant → ne change pas d'état
+    // trois voisins vivant → naissance
+    // quatre et plus de voisin vivant → mort par sur population
 
     public boolean isAlive(Cell cell) {
         if (neighbor(cell) == 2) {
-            for (Cell c : cellsAlive) {
-                if (cell.equals(c)) return true;
+            if (cellsAlive.contains(cell)) {
+                return true;
             }
         }
         return neighbor(cell) == 3;
+    }
+
+    public void state() {
+        // On ajoute le nombre de voisins et la fonction qui determine l'état de la cellule
+        cellState.put(0, isDead);
+        cellState.put(1, isDead);
+        cellState.put(2, isSame);
+        cellState.put(3, isAlive);
+        cellState.put(4, isDead);
+        cellState.put(5, isDead);
+    }
+
+    Function<Cell, Boolean> isAlive = cell -> true;
+    Function<Cell, Boolean> isDead = cell -> false;
+    Function<Cell, Boolean> isSame = this::isAlive;
+
+    public boolean addAsAlive(Cell cell) {
+        return cellState.get(neighbor(cell)).apply(cell);
     }
 
     // -1,-1|-1,0|-1,1
@@ -45,25 +64,10 @@ public class World {
     }
 
     private int getNbNeighbor(Cell findCell, int nbNeighbor) {
-        for (Cell cell : cellsAlive) {
-            if (cell.equals(findCell)) {
-                nbNeighbor++;
-                break;
-            }
+        if (cellsAlive.contains(findCell)){
+            return nbNeighbor+1;
         }
         return nbNeighbor;
-    }
-
-    public void initWorld(int nbAliveToCreate, int size) {
-        if (cellsAlive.isEmpty()) {
-            Random rand = new Random();
-            for (int i = 0; i < nbAliveToCreate; i++) {
-                int x = rand.nextInt(size);
-                int y = rand.nextInt(size);
-                Cell cell = new Cell(x, y);
-                cellsAlive.add(cell);
-            }
-        }
     }
 
     public World newGeneration(int size) {

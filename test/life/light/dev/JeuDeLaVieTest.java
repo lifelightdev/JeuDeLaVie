@@ -1,5 +1,7 @@
-package life.light.dev;
+package test.life.light.dev;
 
+import life.light.dev.Cell;
+import life.light.dev.World;
 import org.junit.Test;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,8 +10,8 @@ import static org.junit.Assert.*;
 public class JeuDeLaVieTest {
 
     // zero ou une voisine vivante = mort par solitude
-    // deux voisine vivante = ne change pas d'état
-    // trois voisine vivante = naissance
+    // deux voisines vivante = ne change pas d'état
+    // trois voisines vivante = naissance
     // quatre et plus de voisine vivante = mort par surpopulation
 
     // -1,-1|-1,0|-1,1
