@@ -4,24 +4,21 @@ import java.util.*;
 
 public class World {
 
-    Set<Cell> cellsAlive = new HashSet<>();
+    public Set<Cell> cellsAlive;
 
     public World(Set<Cell> cellsAlive) {
         this.cellsAlive = cellsAlive;
     }
 
-    public World() {
-    }
-
-    // zero ou un voisin vivant => mort par solitude
-    // deux voisin vivant => ne change pas d'état
-    // trois voisin vivant => naissance
-    // quatre et plus de voisin vivant => mort par sur population
+    // zero ou un voisin vivant → mort par solitude
+    // deux voisins vivant → ne change pas d'état
+    // trois voisins vivant → naissance
+    // quatre et plus de voisin vivant → mort par sur population
 
     public boolean isAlive(Cell cell) {
         if (neighbor(cell) == 2) {
-            for (Cell c : cellsAlive) {
-                if (cell.equals(c)) return true;
+            if (cellsAlive.contains(cell)) {
+                return true;
             }
         }
         return neighbor(cell) == 3;
@@ -45,25 +42,10 @@ public class World {
     }
 
     private int getNbNeighbor(Cell findCell, int nbNeighbor) {
-        for (Cell cell : cellsAlive) {
-            if (cell.equals(findCell)) {
-                nbNeighbor++;
-                break;
-            }
+        if (cellsAlive.contains(findCell)){
+            return nbNeighbor+1;
         }
         return nbNeighbor;
-    }
-
-    public void initWorld(int nbAliveToCreate, int size) {
-        if (cellsAlive.isEmpty()) {
-            Random rand = new Random();
-            for (int i = 0; i < nbAliveToCreate; i++) {
-                int x = rand.nextInt(size);
-                int y = rand.nextInt(size);
-                Cell cell = new Cell(x, y);
-                cellsAlive.add(cell);
-            }
-        }
     }
 
     public World newGeneration(int size) {

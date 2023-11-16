@@ -1,15 +1,20 @@
-package life.light.dev;
+package test.life.light.dev;
 
+import life.light.dev.Cell;
+import life.light.dev.Tools;
+import life.light.dev.World;
 import org.junit.Test;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import static org.junit.Assert.*;
 
 public class JeuDeLaVieTest {
 
     // zero ou une voisine vivante = mort par solitude
-    // deux voisine vivante = ne change pas d'état
-    // trois voisine vivante = naissance
+    // deux voisines vivantes = ne change pas d'état
+    // trois voisines vivantes = naissance
     // quatre et plus de voisine vivante = mort par surpopulation
 
     // -1,-1|-1,0|-1,1
@@ -117,5 +122,27 @@ public class JeuDeLaVieTest {
         World world = new World(cellsAlive);
         Cell cell = new Cell(0,0);
         assertFalse("Mort pas sur population",world.isAlive(cell));
+    }
+
+    @Test
+    public void une_nouvelle_generation(){
+        Set<Cell> cellsAlive = new HashSet<>();
+        Cell cellOne = new Cell(0,1);
+        cellsAlive.add(cellOne);
+        Cell cellTwo = new Cell(1,0);
+        cellsAlive.add(cellTwo);
+        Cell cellThree = new Cell(1,1);
+        cellsAlive.add(cellThree);
+        Cell cellFour = new Cell(-1,0);
+        cellsAlive.add(cellFour);
+        World world = new World(cellsAlive);
+        world = world.newGeneration(3);
+        assertEquals("Il y a une morte", 3, world.cellsAlive.size());
+    }
+
+    @Test
+    public void initialisation_du_monde(){
+        World world = new World(Tools.initWorld(3*8, 3));
+        assertEquals("Initialisation du monde", 9, world.cellsAlive.size());
     }
 }
