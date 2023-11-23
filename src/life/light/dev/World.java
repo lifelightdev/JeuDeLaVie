@@ -3,14 +3,16 @@ package life.light.dev;
 import java.util.*;
 import java.util.function.Function;
 
-public class World {
+public class World implements GenerationStrategie {
 
     Set<Cell> cellsAlive;
+    int size;
     Map<Integer, Function<Cell, Boolean>> cellState = new HashMap<>();
 
-    public World(Set<Cell> cellsAlive) {
+    public World(Set<Cell> cellsAlive, int size) {
         this.cellsAlive = cellsAlive;
         state();
+        this.size = size;
     }
 
 
@@ -70,7 +72,12 @@ public class World {
         return nbNeighbor;
     }
 
-    public World newGeneration(int size) {
+    @Override
+    public World newGeneration(Function<World,World> generation) {
+        return generation.apply(this);
+    }
+
+    public World oldStrategy(World world){
         Set<Cell> newCellsAlive = new HashSet<>();
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
@@ -80,6 +87,6 @@ public class World {
                 }
             }
         }
-        return new World(newCellsAlive);
+        return new World(newCellsAlive, size);
     }
 }

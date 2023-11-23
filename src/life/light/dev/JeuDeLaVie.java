@@ -5,8 +5,8 @@ import javax.swing.*;
 public class JeuDeLaVie {
 
     public static void main (String arg[]){
-        int taille = 90;
-        World world = new World(Tools.initWorld(taille*8, taille));
+        int size = 50;
+        World world = new World(Tools.initWorld(size), size);
 
         //Affichage
         JFrame fenetre = new JFrame();
@@ -15,7 +15,7 @@ public class JeuDeLaVie {
         //Définit un titre de la fenêtre
         fenetre.setTitle("Le jeu de la vie");
         //Définit sa taille
-        fenetre.setSize(taille*10+20, taille*10+40);
+        fenetre.setSize(size*10+20, size*10+40);
         //Positionne la fenêtre au centre
         fenetre.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
@@ -34,7 +34,7 @@ public class JeuDeLaVie {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            world = world.newGeneration(taille);
+            world = world.newGeneration(world::oldStrategy);
         }
     }
 
