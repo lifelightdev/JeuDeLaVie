@@ -3,7 +3,7 @@ package life.light.dev;
 import java.util.*;
 import java.util.function.Function;
 
-public class World implements GenerationStrategie {
+public class World {
 
     Set<Cell> cellsAlive;
     int size;
@@ -15,13 +15,12 @@ public class World implements GenerationStrategie {
         this.size = size;
     }
 
-
     // zero ou un voisin vivant → mort par solitude
     // deux voisins vivant → ne change pas d'état
     // trois voisins vivant → naissance
     // quatre et plus de voisin vivant → mort par sur population
 
-    public boolean isAlive(Cell cell) {
+    public boolean isAliveNextGeneration(Cell cell) {
         if (neighbor(cell) == 2) {
             if (cellsAlive.contains(cell)) {
                 return true;
@@ -40,9 +39,9 @@ public class World implements GenerationStrategie {
         cellState.put(5, isDead);
     }
 
-    Function<Cell, Boolean> isAlive = cell -> true;
-    Function<Cell, Boolean> isDead = cell -> false;
-    Function<Cell, Boolean> isSame = this::isAlive;
+    private Function<Cell, Boolean> isAlive = cell -> true;
+    private Function<Cell, Boolean> isDead = cell -> false;
+    private Function<Cell, Boolean> isSame = this::isAliveNextGeneration;
 
     public boolean addAsAlive(Cell cell) {
         return cellState.get(neighbor(cell)).apply(cell);
@@ -58,35 +57,31 @@ public class World implements GenerationStrategie {
             for (int y = -1; y <= 1; y++) {
                 if ((x != 0) || (y != 0)) {
                     Cell findCell = new Cell(cell.x + x, cell.y + y);
-                    nbNeighbor = getNbNeighbor(findCell, nbNeighbor);
+                    if (cellsAlive.contains(findCell)) {
+                        nbNeighbor++;
+                    }
                 }
             }
-        }
-        return nbNeighbor;
-    }
-
-    private int getNbNeighbor(Cell findCell, int nbNeighbor) {
-        if (cellsAlive.contains(findCell)){
-            return nbNeighbor+1;
         }
         return nbNeighbor;
     }
 
     @Override
-    public World newGeneration(Function<World,World> generation) {
-        return generation.apply(this);
+    public int hashCode() {
+        return Objects.hash(cellsAlive, size);
     }
 
-    public World oldStrategy(World world){
-        Set<Cell> newCellsAlive = new HashSet<>();
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                Cell cell = new Cell(x, y);
-                if (isAlive(cell)) {
-                    newCellsAlive.add(cell);
-                }
-            }
+    @Override
+    public boolean equals(Object world) {
+        if (world instanceof World) {
+            return ((World) world).cellsAlive.equals(this.cellsAlive)
+                    && ((World) world).size == this.size;
         }
-        return new World(newCellsAlive, size);
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "size of world = " + size + " et cellsAlive.size() = " + cellsAlive.size();
     }
 }

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-public class Panneau extends JPanel {
+public class Panel extends JPanel {
 
     private World world;
 
