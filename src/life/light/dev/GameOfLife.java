@@ -2,31 +2,31 @@ package life.light.dev;
 
 import javax.swing.*;
 
-public class JeuDeLaVie {
+public class GameOfLife {
 
     public static void main (String[] arg){
-        int taille = 90;
+        int size = 90;
         if (arg.length == 1) {
-            taille = Integer.parseInt(arg[0]);
+            size = Integer.parseInt(arg[0]);
         }
-        World world = new World(Tools.initWorld(taille*8, taille));
+        World world = new World(Tools.initWorld(size*8, size));
 
         //Affichage
-        JFrame fenetre = new JFrame();
-        fenetre.setContentPane(new Panneau());
+        JFrame window = new JFrame();
+        window.setContentPane(new Panel());
 
         //Définit un titre de la fenêtre
-        fenetre.setTitle("Le jeu de la vie");
-        //Définit sa taille
-        fenetre.setSize(taille*10+20, taille*10+40);
+        window.setTitle("Le jeu de la vie");
+        //Définit sa size
+        window.setSize(size*10+20, size*10+40);
         //Positionne la fenêtre au centre
-        fenetre.setLocationRelativeTo(null);
+        window.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
-        fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Et enfin, la rendre visible
-        fenetre.setVisible(true);
-        Panneau pan = new Panneau();
-        fenetre.setContentPane(pan);
+        window.setVisible(true);
+        Panel pan = new Panel();
+        window.setContentPane(pan);
 
         for( int nbGeneration = 0; nbGeneration < 10000; nbGeneration ++){
             pan.setWorld(world);
@@ -37,7 +37,7 @@ public class JeuDeLaVie {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            world = world.newGeneration(taille);
+            world = world.newGeneration(size);
         }
     }
 

@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class JeuDeLaVieTest {
+public class GameOfLifeTest {
 
     // zero ou une voisine vivante = mort par solitude
     // deux voisines vivantes = ne change pas d'état
@@ -22,25 +22,25 @@ public class JeuDeLaVieTest {
     //  1,-1| 1,0| 1,1
 
     @Test
-    public void zero_voisin(){
+    public void no_neighbor(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
         World world = new World(cellsAlive);
-        assertEquals("0 voisin",world.neighbor(cell),0);
+        assertEquals("0 voisin",0, world.neighbor(cell));
     }
 
     @Test
-    public void un_voisin(){
+    public void one_neighbour(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
         World world = new World(cellsAlive);
-        assertEquals("1 voisin",world.neighbor(cell),1);
+        assertEquals("1 voisin",1, world.neighbor(cell));
     }
 
     @Test
-    public void deux_voisin(){
+    public void two_neighbour(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
@@ -48,11 +48,11 @@ public class JeuDeLaVieTest {
         Cell cellTwo = new Cell(1,0);
         cellsAlive.add(cellTwo);
         World world = new World(cellsAlive);
-        assertEquals("2 voisins",world.neighbor(cell),2);
+        assertEquals("2 voisins",2,world.neighbor(cell));
     }
 
     @Test
-    public void zero_voisine_solitude(){
+    public void death_by_loneliness_with_no_neighbour(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
         World world = new World(cellsAlive);
@@ -60,7 +60,7 @@ public class JeuDeLaVieTest {
     }
 
     @Test
-    public void un_voisine_solitude(){
+    public void death_by_loneliness_with_one_neighbour(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
@@ -70,7 +70,7 @@ public class JeuDeLaVieTest {
     }
 
     @Test
-    public void deux_voisines_mort(){
+    public void stay_dead(){
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
@@ -82,7 +82,7 @@ public class JeuDeLaVieTest {
     }
 
     @Test
-    public void deux_voisines_vivante(){
+    public void stay_alive(){
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
@@ -95,7 +95,7 @@ public class JeuDeLaVieTest {
     }
 
     @Test
-    public void trois_voisines_naissance(){
+    public void birth(){
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
@@ -109,7 +109,7 @@ public class JeuDeLaVieTest {
     }
 
     @Test
-    public void quatre_voisines_mort(){
+    public void death_by_over_population(){
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
@@ -121,11 +121,11 @@ public class JeuDeLaVieTest {
         cellsAlive.add(cellFour);
         World world = new World(cellsAlive);
         Cell cell = new Cell(0,0);
-        assertFalse("Mort pas sur population",world.isAlive(cell));
+        assertFalse("Mort par sur population",world.isAlive(cell));
     }
 
     @Test
-    public void une_nouvelle_generation(){
+    public void a_new_generation(){
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
@@ -141,7 +141,7 @@ public class JeuDeLaVieTest {
     }
 
     @Test
-    public void initialisation_du_monde(){
+    public void world_initialization(){
         World world = new World(Tools.initWorld(3*8, 3));
         assertEquals("Initialisation du monde", 9, world.cellsAlive.size());
     }
