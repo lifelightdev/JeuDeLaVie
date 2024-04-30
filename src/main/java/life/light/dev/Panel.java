@@ -4,7 +4,10 @@ import java.awt.*;
 import javax.swing.JPanel;
 
 public class Panel extends JPanel {
+
   private static final int CELL_SIZE = 10;
+  public static final Color CELL_COLOR = Color.black;
+  public static final Color WORLD_BACKGROUND = Color.white;
 
   private World world;
 
@@ -21,18 +24,30 @@ public class Panel extends JPanel {
 
 
   public void paintComponent(Graphics g){
-        //On choisit une couleur de fond pour le rectangle
-        g.setColor(Color.white);
-        //On le dessine de sorte qu'il occupe toute la surface
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        g.setColor(Color.black);
+    repaintBackground(g);
+    paintAliveCells(g);
+  }
 
-        for (Cell cell : world.getCellsAlive()) {
-            g.fillRect(cell.x*CELL_SIZE, cell.y*CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        }
-    }
+  private void paintAliveCells(Graphics g) {
+    g.setColor(CELL_COLOR);
+    world.getCellsAlive()
+        .stream()
+        .forEach(cell -> paintCell(g, cell.x, cell.y));
+  }
 
-    public void setWorld(World world) {
+  private static void paintCell(Graphics g, int x, int y) {
+    g.fillRect(
+        x * CELL_SIZE,
+        y * CELL_SIZE,
+        CELL_SIZE, CELL_SIZE);
+  }
+
+  private void repaintBackground(Graphics g) {
+    g.setColor(WORLD_BACKGROUND);
+    g.fillRect(0, 0, this.getWidth(), this.getHeight());
+  }
+
+  public void setWorld(World world) {
         this.world = world;
     }
 }
