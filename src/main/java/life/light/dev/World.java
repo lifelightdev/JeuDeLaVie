@@ -4,10 +4,12 @@ import java.util.*;
 
 public class World {
 
-    public Set<Cell> cellsAlive;
+    private Set<Cell> cellsAlive;
+    private int size;
 
-    public World(Set<Cell> cellsAlive) {
+    public World(Set<Cell> cellsAlive, int size) {
         this.cellsAlive = cellsAlive;
+      this.size = size;
     }
 
     // zero ou un voisin vivant → mort par solitude
@@ -48,7 +50,7 @@ public class World {
         return nbNeighbor;
     }
 
-    public World newGeneration(int size) {
+    public World newGeneration() {
         Set<Cell> newCellsAlive = new HashSet<>();
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
@@ -58,6 +60,14 @@ public class World {
                 }
             }
         }
-        return new World(newCellsAlive);
+        return new World(newCellsAlive, 80);
     }
+
+  public Set<Cell> getCellsAlive() {
+    return cellsAlive;
+  }
+
+  public int getSize() {
+    return size;
+  }
 }

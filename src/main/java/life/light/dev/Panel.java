@@ -1,15 +1,22 @@
 package life.light.dev;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import javax.swing.JPanel;
 
 public class Panel extends JPanel {
+  private static final int CELL_SIZE = 10;
 
   private World world;
 
   public Panel(World world) {
+    super();
     this.world = world;
+    setPreferredSize(
+        new Dimension(
+            world.getSize() * CELL_SIZE,
+            world.getSize() * CELL_SIZE
+        )
+    );
   }
 
 
@@ -20,8 +27,8 @@ public class Panel extends JPanel {
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.black);
 
-        for (Cell cell : world.cellsAlive) {
-            g.fillRect(cell.x*10, cell.y*10, 10, 10);
+        for (Cell cell : world.getCellsAlive()) {
+            g.fillRect(cell.x*CELL_SIZE, cell.y*CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
     }
 

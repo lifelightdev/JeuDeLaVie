@@ -22,7 +22,7 @@ public class GameOfLifeTest {
     public void no_neighbor(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Assertions.assertThat(world.neighbor(cell)).as("0 neighbor").isEqualTo(0);
     }
 
@@ -32,7 +32,7 @@ public class GameOfLifeTest {
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Assertions.assertThat(world.neighbor(cell)).as("1 voisin").isEqualTo(1);
     }
 
@@ -44,7 +44,7 @@ public class GameOfLifeTest {
         cellsAlive.add(cellOne);
         Cell cellTwo = new Cell(1,0);
         cellsAlive.add(cellTwo);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Assertions.assertThat(world.neighbor(cell)).as("2 voisins").isEqualTo(2);
     }
 
@@ -52,7 +52,7 @@ public class GameOfLifeTest {
     public void death_by_loneliness_with_no_neighbour(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Assertions.assertThat(world.isAlive(cell)).as("Mort par solitude").isFalse();
     }
 
@@ -62,7 +62,7 @@ public class GameOfLifeTest {
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Assertions.assertThat(world.isAlive(cell)).as("Mort par solitude").isFalse();
     }
 
@@ -73,7 +73,7 @@ public class GameOfLifeTest {
         cellsAlive.add(cellOne);
         Cell cellTwo = new Cell(1,0);
         cellsAlive.add(cellTwo);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Cell cell = new Cell(0,0);
         Assertions.assertThat(world.isAlive(cell)).as("Reste morte").isFalse();
     }
@@ -87,7 +87,7 @@ public class GameOfLifeTest {
         cellsAlive.add(cellTwo);
         Cell cellThree = new Cell(0,0);
         cellsAlive.add(cellThree);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Assertions.assertThat(world.isAlive(cellThree)).as("Reste vivante").isTrue();
     }
 
@@ -100,7 +100,7 @@ public class GameOfLifeTest {
         cellsAlive.add(cellTwo);
         Cell cellThree = new Cell(0,0);
         cellsAlive.add(cellThree);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Cell cell = new Cell(1,1);
         Assertions.assertThat(world.isAlive(cell)).as("Naissance").isTrue();
     }
@@ -116,7 +116,7 @@ public class GameOfLifeTest {
         cellsAlive.add(cellThree);
         Cell cellFour = new Cell(-1,0);
         cellsAlive.add(cellFour);
-        World world = new World(cellsAlive);
+        World world = new World(cellsAlive, 80);
         Cell cell = new Cell(0,0);
         Assertions.assertThat(world.isAlive(cell)).as("Mort par sur population").isFalse();
     }
@@ -132,15 +132,15 @@ public class GameOfLifeTest {
         cellsAlive.add(cellThree);
         Cell cellFour = new Cell(-1,0);
         cellsAlive.add(cellFour);
-        World world = new World(cellsAlive);
-        world = world.newGeneration(3);
-        Assertions.assertThat(world.cellsAlive.size()).as("Il y a une morte").isEqualTo(3);
+        World world = new World(cellsAlive, 80);
+        world = world.newGeneration();
+        Assertions.assertThat(world.getCellsAlive().size()).as("Il y a une morte").isEqualTo(3);
     }
 
     @Test
     @Disabled
     public void world_initialization(){
-        World world = new World(Tools.initWorld(3*8, 3));
-        Assertions.assertThat(world.cellsAlive.size()).as("Initialisation du monde").isEqualTo(9);
+        World world = Tools.initWorld(3*8, 3);
+        Assertions.assertThat(world.getCellsAlive().size()).as("Initialisation du monde").isEqualTo(9);
     }
 }
