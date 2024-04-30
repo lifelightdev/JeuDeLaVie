@@ -6,9 +6,14 @@ import javax.swing.JPanel;
 
 public class Panel extends JPanel {
 
-    private World world;
+  private World world;
 
-    public void paintComponent(Graphics g){
+  public Panel(World world) {
+    this.world = world;
+  }
+
+
+  public void paintComponent(Graphics g){
         //On choisit une couleur de fond pour le rectangle
         g.setColor(Color.white);
         //On le dessine de sorte qu'il occupe toute la surface

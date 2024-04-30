@@ -13,19 +13,17 @@ public class GameOfLife {
 
         //Affichage
         JFrame window = new JFrame();
-        window.setContentPane(new Panel());
+        Panel pan = new Panel(world);
+        window.setContentPane(pan);
 
         //Définit un titre de la fenêtre
         window.setTitle("Le jeu de la vie");
-        //Définit sa size
-        window.setSize(size*10+20, size*10+40);
         //Positionne la fenêtre au centre
         window.setLocationRelativeTo(null);
         //Termine le processus lorsqu'on clique sur la croix rouge
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Et enfin, la rendre visible
         window.setVisible(true);
-        Panel pan = new Panel();
         window.setContentPane(pan);
 
         for( int nbGeneration = 0; nbGeneration < 10000; nbGeneration ++){
