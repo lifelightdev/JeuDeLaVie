@@ -50,4 +50,14 @@ public class Panel extends JPanel {
   public void setWorld(World world) {
         this.world = world;
     }
+
+  public World getWorld() {
+    return world;
+  }
+
+  public void nextGeneration() {
+    world = world.newGeneration();
+    revalidate();
+    repaint();
+  }
 }
