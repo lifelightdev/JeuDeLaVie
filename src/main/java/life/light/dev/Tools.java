@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Tools {
 
-    public static Set<Cell> initWorld(int nbAliveToCreate, int size) {
+    public static World initWorld(int nbAliveToCreate, int size) {
         Set<Cell> cellsAlive = new HashSet<>();
         Random rand = new Random();
         for (int i = 0; i < nbAliveToCreate; i++) {
@@ -15,7 +15,7 @@ public class Tools {
             Cell cell = new Cell(x, y);
             cellsAlive.add(cell);
         }
-        return cellsAlive;
+        return new World(cellsAlive, size);
     }
 
 }
