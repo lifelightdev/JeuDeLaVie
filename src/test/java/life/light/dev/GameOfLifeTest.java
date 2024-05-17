@@ -22,7 +22,7 @@ public class GameOfLifeTest {
     public void no_neighbor(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
-        World world = new World(cellsAlive, 80);
+        World world = new World(cellsAlive, 90);
         Assertions.assertThat(world.neighbor(cell)).as("0 neighbor").isEqualTo(0);
     }
 
@@ -32,8 +32,8 @@ public class GameOfLifeTest {
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
-        World world = new World(cellsAlive, 80);
-        Assertions.assertThat(world.neighbor(cell)).as("1 voisin").isEqualTo(1);
+        World world = new World(cellsAlive, 90);
+        Assertions.assertThat(world.neighbor(cell)).as("one neighbor").isEqualTo(1);
     }
 
     @Test
@@ -44,16 +44,16 @@ public class GameOfLifeTest {
         cellsAlive.add(cellOne);
         Cell cellTwo = new Cell(1,0);
         cellsAlive.add(cellTwo);
-        World world = new World(cellsAlive, 80);
-        Assertions.assertThat(world.neighbor(cell)).as("2 voisins").isEqualTo(2);
+        World world = new World(cellsAlive, 90);
+        Assertions.assertThat(world.neighbor(cell)).as("two neighbors").isEqualTo(2);
     }
 
     @Test
     public void death_by_loneliness_with_no_neighbour(){
         Cell cell = new Cell(0,0);
         Set<Cell> cellsAlive = new HashSet<>();
-        World world = new World(cellsAlive, 80);
-        Assertions.assertThat(world.isAlive(cell)).as("Mort par solitude").isFalse();
+        World world = new World(cellsAlive, 90);
+        Assertions.assertThat(world.isAlive(cell)).as("Death by loneliness").isFalse();
     }
 
     @Test
@@ -62,8 +62,8 @@ public class GameOfLifeTest {
         Set<Cell> cellsAlive = new HashSet<>();
         Cell cellOne = new Cell(0,1);
         cellsAlive.add(cellOne);
-        World world = new World(cellsAlive, 80);
-        Assertions.assertThat(world.isAlive(cell)).as("Mort par solitude").isFalse();
+        World world = new World(cellsAlive, 90);
+        Assertions.assertThat(world.isAlive(cell)).as("Death by loneliness").isFalse();
     }
 
     @Test
@@ -73,9 +73,9 @@ public class GameOfLifeTest {
         cellsAlive.add(cellOne);
         Cell cellTwo = new Cell(1,0);
         cellsAlive.add(cellTwo);
-        World world = new World(cellsAlive, 80);
+        World world = new World(cellsAlive, 90);
         Cell cell = new Cell(0,0);
-        Assertions.assertThat(world.isAlive(cell)).as("Reste morte").isFalse();
+        Assertions.assertThat(world.isAlive(cell)).as("Stay dead").isFalse();
     }
 
     @Test
@@ -87,8 +87,8 @@ public class GameOfLifeTest {
         cellsAlive.add(cellTwo);
         Cell cellThree = new Cell(0,0);
         cellsAlive.add(cellThree);
-        World world = new World(cellsAlive, 80);
-        Assertions.assertThat(world.isAlive(cellThree)).as("Reste vivante").isTrue();
+        World world = new World(cellsAlive, 90);
+        Assertions.assertThat(world.isAlive(cellThree)).as("Stay alive").isTrue();
     }
 
     @Test
@@ -100,9 +100,9 @@ public class GameOfLifeTest {
         cellsAlive.add(cellTwo);
         Cell cellThree = new Cell(0,0);
         cellsAlive.add(cellThree);
-        World world = new World(cellsAlive, 80);
+        World world = new World(cellsAlive, 90);
         Cell cell = new Cell(1,1);
-        Assertions.assertThat(world.isAlive(cell)).as("Naissance").isTrue();
+        Assertions.assertThat(world.isAlive(cell)).as("Birth").isTrue();
     }
 
     @Test
@@ -116,9 +116,9 @@ public class GameOfLifeTest {
         cellsAlive.add(cellThree);
         Cell cellFour = new Cell(-1,0);
         cellsAlive.add(cellFour);
-        World world = new World(cellsAlive, 80);
+        World world = new World(cellsAlive, 90);
         Cell cell = new Cell(0,0);
-        Assertions.assertThat(world.isAlive(cell)).as("Mort par sur population").isFalse();
+        Assertions.assertThat(world.isAlive(cell)).as("Death by over population").isFalse();
     }
 
     @Test
@@ -132,9 +132,9 @@ public class GameOfLifeTest {
         cellsAlive.add(cellThree);
         Cell cellFour = new Cell(-1,0);
         cellsAlive.add(cellFour);
-        World world = new World(cellsAlive, 80);
+        World world = new World(cellsAlive, 90);
         world = world.newGeneration();
-        Assertions.assertThat(world.getCellsAlive().size()).as("Il y a une morte").isEqualTo(3);
+        Assertions.assertThat(world.getCellsAlive().size()).as("There is a dead cell").isEqualTo(3);
     }
 
     @Test
