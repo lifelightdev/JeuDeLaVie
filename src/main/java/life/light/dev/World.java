@@ -9,7 +9,7 @@ public class World {
 
     public World(Set<Cell> cellsAlive, int size) {
         this.cellsAlive = cellsAlive;
-      this.size = size;
+        this.size = size;
     }
 
     // zero ou un voisin vivant → mort par solitude
@@ -60,7 +60,7 @@ public class World {
                 }
             }
         }
-        return new World(newCellsAlive, 80);
+        return new World(newCellsAlive, 90);
     }
 
   public Set<Cell> getCellsAlive() {
