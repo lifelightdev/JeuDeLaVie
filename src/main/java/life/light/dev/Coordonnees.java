@@ -2,8 +2,8 @@ package life.light.dev;
 
 public class Coordonnees {
 
-    private int colonne = 0;
-    private int ligne = 0;
+    private int colonne;
+    private int ligne;
 
     Coordonnees (){
         colonne = 0;
@@ -31,8 +31,4 @@ public class Coordonnees {
         this.ligne = ligne;
     }
 
-    public void setCoordonnees(int colonne, int ligne){
-        this.colonne = colonne;
-        this.ligne = ligne;
-    }
 }

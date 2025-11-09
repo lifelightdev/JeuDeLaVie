@@ -2,17 +2,16 @@ package life.light.dev;
 
 import java.util.Random;
 
-public class Grille {
+public class Monde {
 
     public static final int NAISSANCE = 3;
     public static final int SURVIE2VIVANTS = 2;
     public static final int SURVIE3VIVANTS = 3;
 
     private Cellule[][] grille;
-    private Coordonnees coordonnees;
-    private int taille;
+    private final int taille;
 
-    Grille(int taille){
+    Monde(int taille){
         init_mort(taille);
         this.taille = taille;
     }
@@ -28,10 +27,10 @@ public class Grille {
         }
     }
 
-    public void init_vivant(int nombreDeVivantACreer) {
+    public void initialiseLeMondeAvec(int nombreDeCelluleVivanteACreer) {
         Random rand = new Random();
         int nbVivantEnCreation = 0;
-        while (nbVivantEnCreation < nombreDeVivantACreer){
+        while (nbVivantEnCreation < nombreDeCelluleVivanteACreer){
             int colonne = rand.nextInt(taille);
             int ligne = rand.nextInt(taille);
             Coordonnees coordonnees = new Coordonnees(colonne, ligne);
@@ -63,10 +62,7 @@ public class Grille {
         if (!isColonneDansGrille(coordonnees)){
             return false;
         }
-        if (!isLigneDansGrille(coordonnees)){
-            return false;
-        }
-        return true;
+        return isLigneDansGrille(coordonnees);
     }
 
     public boolean isLigneDansGrille(Coordonnees coordonnees) {
@@ -77,22 +73,14 @@ public class Grille {
         return coordonnees.getColonne() >= 0 && coordonnees.getColonne() < taille;
     }
 
-    public Coordonnees getCoordonnees() {
-        return coordonnees;
-    }
-
-    public void setCoordonnees(Coordonnees coordonnees) {
-        this.coordonnees = coordonnees;
-    }
-
     public boolean equals (Object grille){
         boolean isEgale = false;
-        if (grille instanceof Grille){
-            if (((Grille)grille).taille == taille){
+        if (grille instanceof Monde){
+            if (((Monde)grille).taille == taille){
                 for ( int colonne = 0 ; colonne < taille; colonne++){
                     for ( int ligne = 0 ; ligne < taille; ligne++){
                         Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-                        if (!(getCellule(coordonnees) == ((Grille)grille).getCellule(coordonnees))){
+                        if (!(getCellule(coordonnees) == ((Monde)grille).getCellule(coordonnees))){
                             isEgale = false;
                             break;
                         } else {
@@ -139,9 +127,7 @@ public class Grille {
 
     public Boolean isNaissance (Coordonnees coordonnees){
         if (!getCellule(coordonnees).getValeur()) {
-            if (nbVivantAlentour(coordonnees) == NAISSANCE) {
-                return true;
-            }
+            return nbVivantAlentour(coordonnees) == NAISSANCE;
         }
         return false;
     }
@@ -149,10 +135,7 @@ public class Grille {
     public Boolean isSurvie (Coordonnees coordonnees){
         if(getCellule(coordonnees).isVivant()){
             int nbVivantAlentour = nbVivantAlentour(coordonnees);
-            if ((nbVivantAlentour != SURVIE2VIVANTS) && (nbVivantAlentour != SURVIE3VIVANTS)) {
-                return false;
-            }
-            return true;
+            return (nbVivantAlentour == SURVIE2VIVANTS) || (nbVivantAlentour == SURVIE3VIVANTS);
         }
         return false;
     }
