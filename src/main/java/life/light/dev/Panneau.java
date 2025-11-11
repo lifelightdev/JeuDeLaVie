@@ -1,30 +1,27 @@
 package life.light.dev;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.util.Set;
+
+import static life.light.dev.JeuDeLaVie.TAILLE_DE_LA_CELLULE_A_L_ECRAN;
 
 public class Panneau extends JPanel {
 
-    private Monde monde;
-    public void paintComponent(Graphics g){
+    Set<Cellule> listeDesCellulesVivantes;
+
+    @Override
+    public void paintComponent(Graphics g) {
         //On choisit une couleur de fond pour le rectangle
         g.setColor(Color.white);
         //On le dessine de sorte qu'il occupe toute la surface
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.black);
 
-        for (int colonne = 0; colonne < monde.getTaille(); colonne++) {
-            for (int ligne = 0; ligne < monde.getTaille(); ligne++) {
-                Coordonnees coordonnees = new Coordonnees(colonne, ligne);
-                if (monde.getCellule(coordonnees).getValeur()){
-                    g.fillRect(colonne*10, ligne*10, 10, 10);
-                }
+        if (listeDesCellulesVivantes != null) {
+            for (Cellule c : listeDesCellulesVivantes) {
+                g.fillRect(c.colonne() * TAILLE_DE_LA_CELLULE_A_L_ECRAN, c.ligne() * TAILLE_DE_LA_CELLULE_A_L_ECRAN, TAILLE_DE_LA_CELLULE_A_L_ECRAN, TAILLE_DE_LA_CELLULE_A_L_ECRAN);
             }
         }
-    }
-
-    public void setGrille(Monde monde) {
-        this.monde = monde;
     }
 }
